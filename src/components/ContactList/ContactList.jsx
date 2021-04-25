@@ -1,21 +1,10 @@
 import styles from './ContactList.module.scss';
 
-const ContactList = ({ items, onDeleteContact }) => {
-  const statMen = items.reduce(
-    (acc, item) => (item.gender === 'male' ? acc + 1 : acc),
-    0,
-  );
-  const statWomen = items.reduce(
-    (acc, item) => (item.gender === 'female' ? acc + 1 : acc),
-    0,
-  );
-
+const ContactList = ({ items, onDeleteContact, children }) => {
   return (
     <div>
-      <h3>ContactList</h3>
-      <p>Found contacts: {items.length}</p>
-      <p>men {statMen}</p>
-      <p>women {statWomen}</p>
+      <h3 className="title">ContactList</h3>
+      {children}
       {items.map(contact => (
         <li key={contact.id} className={styles.ContactList__item}>
           <p>{contact.name}</p>

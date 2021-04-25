@@ -13,8 +13,11 @@ class App extends Component {
   };
 
   getDataFromContactForm = ({ name, number }) => {
-    console.log(name);
-    console.log(number);
+    if (this.state.contacts.some(contact => contact.name === name)) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
+
     const contact = {
       id: shortid.generate(),
       name,
@@ -32,17 +35,6 @@ class App extends Component {
     }));
   };
 
-  addContact = name => {
-    const contact = {
-      id: shortid.generate(),
-      name,
-    };
-
-    this.setState(prevState => ({
-      contact: [contact, ...prevState.contact],
-    }));
-  };
-
   changeFilter = e => {
     this.setState({ filter: e.target.value });
   };
@@ -54,27 +46,18 @@ class App extends Component {
       contact.name.toLowerCase().includes(normalizedThisFilterState),
     );
 
-    // const visibleContacts = this.state.contacts.filter(contact =>
-    //   contact.name.toLowerCase().includes(this.state.filter.toLowerCase()),
-    // );
-
-    // const visibleContactsByTel = this.state.contacts.filter(contact =>
-    //   contact.number.includes(this.state.filter),
-    // );
-
     return (
       <Section>
         <ContactForm getData={this.getDataFromContactForm} />
-        <br />
-        <Filter
-          valueState={this.state.filter}
-          filterByName={this.changeFilter}
-        />
         <ContactList
           items={visibleContacts}
-          // items={this.state.contacts}
           onDeleteContact={this.deleteContact}
-        />
+        >
+          <Filter
+            valueState={this.state.filter}
+            filterByName={this.changeFilter}
+          />
+        </ContactList>
       </Section>
     );
   }

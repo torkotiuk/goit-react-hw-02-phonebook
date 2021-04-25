@@ -6,25 +6,18 @@ class ContactForm extends Component {
   state = {
     name: '',
     number: '',
-    gender: 'male',
   };
 
   nameInputId = shortid.generate();
   numberInputId = shortid.generate();
 
-  //this pattern doesn't work for checkbox, but work for radio buttons
   handleChange = event => {
-    // console.log(event.target.name);
-    // console.log(event.target.value);
     this.setState({ [event.target.name]: event.target.value });
   };
 
   handleSubmit = event => {
     event.preventDefault();
-
-    //send data to App
     this.props.getData(this.state);
-
     this.reset();
   };
 
@@ -34,54 +27,34 @@ class ContactForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h3>Phonebook</h3>
-        <label htmlFor={this.nameInputId}>
+      <form className="form" onSubmit={this.handleSubmit}>
+        <h3 className="title">Phonebook</h3>
+        <label htmlFor={this.nameInputId} className="form__input">
           Name:
           <input
             id={this.nameInputId}
             type="text"
             name="name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             value={this.state.name}
             onChange={this.handleChange}
           />
         </label>
-        <br />
         <label htmlFor={this.numberInputId}>
           Number:
           <input
             id={this.numberInputId}
             type="tel"
             name="number"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            required
             value={this.state.number}
             onChange={this.handleChange}
           />
         </label>
-        <br />
-
-        <p>Gender</p>
-        <label htmlFor="">
-          Male
-          <input
-            type="radio"
-            name="gender"
-            value="male"
-            onChange={this.handleChange}
-            checked={this.state.gender === 'male'}
-          />
-        </label>
-        <label htmlFor="">
-          Female
-          <input
-            type="radio"
-            name="gender"
-            value="female"
-            onChange={this.handleChange}
-            checked={this.state.gender === 'female'}
-          />
-        </label>
-        <br />
-        <button type="submit">Add</button>
+        <button className="btn" type="submit">
+          Add
+        </button>
       </form>
     );
   }
